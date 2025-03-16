@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // Get community details
     const { data: community } = await supabase

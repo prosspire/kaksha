@@ -173,26 +173,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-24 bg-white" id="pricing">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">
-              Join Premium Communities
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Access expert-led communities with structured courses and active
-              discussions.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {plans?.map((item: any) => (
-              <PricingCard key={item.id} item={item} user={user} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Educator CTA Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
