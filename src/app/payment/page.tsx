@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function PaymentPage({
   searchParams,
@@ -44,14 +45,14 @@ export default async function PaymentPage({
               <div className="flex justify-center mb-4">
                 <CheckCircle2 className="h-16 w-16 text-green-500" />
               </div>
-              <CardTitle className="text-center">Payment Successful!</CardTitle>
+              <CardTitle className="text-center">Success!</CardTitle>
               <CardDescription className="text-center">
-                Your subscription has been processed successfully.
+                You have successfully joined the community.
               </CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-center">
               <Button asChild>
-                <a href="/dashboard">Go to Dashboard</a>
+                <Link href="/dashboard">Go to Dashboard</Link>
               </Button>
             </CardFooter>
           </Card>
@@ -69,14 +70,14 @@ export default async function PaymentPage({
         <main className="container mx-auto px-4 py-12">
           <Card className="max-w-md mx-auto">
             <CardHeader>
-              <CardTitle className="text-center">Payment Canceled</CardTitle>
+              <CardTitle className="text-center">Action Canceled</CardTitle>
               <CardDescription className="text-center">
-                Your payment was canceled. You can try again when you're ready.
+                Your action was canceled. You can try again when you're ready.
               </CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-center">
               <Button asChild>
-                <a href="/dashboard">Return to Dashboard</a>
+                <Link href="/dashboard">Return to Dashboard</Link>
               </Button>
             </CardFooter>
           </Card>
@@ -108,11 +109,6 @@ export default async function PaymentPage({
     .select("*")
     .eq("id", user.id)
     .single();
-
-  async function handleCheckout() {
-    "use server";
-    // This will be handled client-side
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -210,11 +206,7 @@ export default async function PaymentPage({
 
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              By subscribing, you agree to our Terms of Service and Privacy
-              Policy.
-            </p>
-            <p className="mt-2">
-              You can cancel your subscription at any time from your dashboard.
+              By joining, you agree to our Terms of Service and Privacy Policy.
             </p>
           </div>
         </div>

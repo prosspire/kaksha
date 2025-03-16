@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { supabase } from "../../supabase/supabase";
+import { createClient } from "../../supabase/client";
 
 export default function PricingCard({
   item,
@@ -20,42 +20,18 @@ export default function PricingCard({
   item: any;
   user: User | null;
 }) {
+  const supabase = createClient();
+
   // Handle checkout process
-  const handleCheckout = async (priceId: string) => {
+  const handleCheckout = async () => {
     if (!user) {
       // Redirect to login if user is not authenticated
       window.location.href = "/sign-in?redirect=pricing";
       return;
     }
 
-    try {
-      const { data, error } = await supabase.functions.invoke(
-        "supabase-functions-create-checkout",
-        {
-          body: {
-            price_id: priceId,
-            user_id: user.id,
-            return_url: `${window.location.origin}/dashboard`,
-          },
-          headers: {
-            "X-Customer-Email": user.email || "",
-          },
-        },
-      );
-
-      if (error) {
-        throw error;
-      }
-
-      // Redirect to Stripe checkout
-      if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error("No checkout URL returned");
-      }
-    } catch (error) {
-      console.error("Error creating checkout session:", error);
-    }
+    // Redirect to payment page
+    window.location.href = `/payment?community_id=${item.id}`;
   };
 
   // Define features based on plan type
@@ -112,9 +88,9 @@ export default function PricingCard({
         </CardTitle>
         <CardDescription className="flex items-baseline gap-2 mt-2">
           <span className="text-4xl font-bold text-gray-900">
-            ₹{Math.round((item?.amount / 100) * 83)}
+            ₹{item.price}
           </span>
-          <span className="text-gray-600">/{item?.interval}</span>
+          <span className="text-gray-600">/month</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="relative">
@@ -129,12 +105,10 @@ export default function PricingCard({
       </CardContent>
       <CardFooter className="relative">
         <Button
-          onClick={async () => {
-            await handleCheckout(item.id);
-          }}
+          onClick={handleCheckout}
           className={`w-full py-6 text-lg font-medium ${item.popular ? "bg-orange-600 hover:bg-orange-700" : ""}`}
         >
-          Join Community
+          Subscribe Now
         </Button>
       </CardFooter>
     </Card>

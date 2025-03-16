@@ -259,19 +259,8 @@ export const joinCommunityAction = async (formData: FormData) => {
     return redirect(`/dashboard/communities/${communityId}`);
   }
 
-  // All communities are free to join, no need to check pricing
-  const { error } = await supabase.from("community_members").insert({
-    community_id: communityId,
-    user_id: user.id,
-    role: "member",
-    joined_at: new Date().toISOString(),
-  });
-
-  if (error) {
-    return encodedRedirect("error", "/pricing", "Failed to join community");
-  }
-
-  return redirect(`/dashboard/communities/${communityId}`);
+  // Redirect to payment page
+  return redirect(`/payment?community_id=${communityId}`);
 };
 
 export const cancelSubscriptionAction = async (formData: FormData) => {

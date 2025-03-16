@@ -29,7 +29,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="#features"
+                    href="/for-educators"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     How It Works
@@ -37,7 +37,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#pricing"
+                    href="/pricing"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Communities
@@ -53,7 +53,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/for-educators"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     For Educators
@@ -68,7 +68,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="#"
+                    href="/about"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     About Us
@@ -76,7 +76,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/blog"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Blog
@@ -84,7 +84,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/careers"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Careers
@@ -92,7 +92,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/contact"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Contact
@@ -107,7 +107,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="#"
+                    href="/help-center"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Help Center
@@ -115,7 +115,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/community-guidelines"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Community Guidelines
@@ -123,7 +123,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/privacy-policy"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Privacy Policy
@@ -131,7 +131,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="/terms-of-service"
                     className="text-gray-600 hover:text-orange-600"
                   >
                     Terms of Service

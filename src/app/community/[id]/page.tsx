@@ -99,7 +99,7 @@ export default async function CommunityPage({
                 variant="secondary"
                 className="bg-green-100 text-green-800"
               >
-                Free Access
+                ₹{community.price}/month
               </Badge>
             </div>
 
@@ -127,16 +127,11 @@ export default async function CommunityPage({
                   <Button size="lg">Go to Community Dashboard</Button>
                 </Link>
               ) : (
-                <form action="/actions.ts" method="post">
-                  <input type="hidden" name="community_id" value={params.id} />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    formAction="/actions.ts?/joinCommunityAction"
-                  >
-                    Join Community
+                <Link href={`/payment?community_id=${params.id}`}>
+                  <Button size="lg">
+                    Subscribe for ₹{community.price}/month
                   </Button>
-                </form>
+                </Link>
               )
             ) : (
               <Link href="/sign-in">
