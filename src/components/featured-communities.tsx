@@ -14,11 +14,12 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useState, useEffect } from "react";
+import { Community, Creator, MemberCounts, Creators } from "@/types/community";
 
 export function FeaturedCommunities() {
-  const [communities, setCommunities] = useState([]);
-  const [creators, setCreators] = useState({});
-  const [memberCounts, setMemberCounts] = useState({});
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const [creators, setCreators] = useState<Creators>({});
+  const [memberCounts, setMemberCounts] = useState<MemberCounts>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,11 +43,11 @@ export function FeaturedCommunities() {
           .range(from, to);
 
         if (communitiesData && communitiesData.length > 0) {
-          setCommunities(communitiesData);
-          setTotalPages(Math.ceil(count / communitiesPerPage));
+          setCommunities(communitiesData as Community[]);
+          setTotalPages(Math.ceil((count || 0) / communitiesPerPage));
 
           // Fetch member counts for each community
-          const memberCountsObj = {};
+          const memberCountsObj: MemberCounts = {};
           for (const community of communitiesData) {
             const { count: memberCount } = await supabase
               .from("community_members")
@@ -68,8 +69,8 @@ export function FeaturedCommunities() {
               .in("id", creatorIds);
 
             if (creatorsData) {
-              const creatorsObj = {};
-              creatorsData.forEach((creator) => {
+              const creatorsObj: Creators = {};
+              creatorsData.forEach((creator: Creator) => {
                 creatorsObj[creator.id] = creator;
               });
               setCreators(creatorsObj);
