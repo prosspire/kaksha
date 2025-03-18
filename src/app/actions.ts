@@ -557,8 +557,35 @@ export const sendNewsletterAction = async (formData: FormData) => {
     return { success: false, error: "Failed to create newsletter record" };
   }
 
-  // In a real implementation, you would integrate with an email service like SendGrid, Mailchimp, etc.
-  // For now, we'll just simulate sending emails by storing the newsletter in the database
+  // Actually send the emails using our edge function
+  try {
+    // Call the send-email edge function for each recipient
+    // In a production app, you'd want to batch these or use a queue
+    for (const email of recipientEmails) {
+      await supabase.functions.invoke("send-email", {
+        body: {
+          to: email,
+          subject: `${community.name}: ${subject}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>${subject}</h2>
+              <div>${content}</div>
+              <hr style="margin: 20px 0;" />
+              <p style="color: #666; font-size: 12px;">
+                You're receiving this email because you're a member of ${community.name} on Kaksha.
+                <br />
+                To unsubscribe, update your <a href="https://kaksha.com/dashboard/settings">notification settings</a>.
+              </p>
+            </div>
+          `,
+        },
+      });
+    }
+  } catch (error) {
+    console.error("Error sending emails:", error);
+    // We still return success since the newsletter was created in the database
+    // In a production app, you might want to handle this differently
+  }
 
   return { success: true, newsletterId: newsletter.id };
 };

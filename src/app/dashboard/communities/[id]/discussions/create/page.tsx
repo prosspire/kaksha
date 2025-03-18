@@ -67,7 +67,11 @@ export default async function CreateDiscussion({
             </p>
           </header>
 
-          <form className="space-y-6 bg-card p-6 rounded-lg border shadow-sm">
+          <form
+            action="/api/create-discussion"
+            method="POST"
+            className="space-y-6 bg-card p-6 rounded-lg border shadow-sm"
+          >
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="title">Discussion Title</Label>
@@ -88,6 +92,22 @@ export default async function CreateDiscussion({
                   rows={8}
                   required
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="category">Category</Label>
+                <select
+                  id="category"
+                  name="category"
+                  className="w-full p-2 border rounded-md bg-background"
+                  required
+                >
+                  <option value="">Select a category</option>
+                  <option value="question">Question</option>
+                  <option value="discussion">Discussion</option>
+                  <option value="resource">Resource</option>
+                  <option value="announcement">Announcement</option>
+                </select>
               </div>
 
               <input type="hidden" name="community_id" value={params.id} />

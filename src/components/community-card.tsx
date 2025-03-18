@@ -42,6 +42,8 @@ export function CommunityCard({
   creator,
   stats,
 }: CommunityCardProps) {
+  // Ensure stats is always defined with default values
+  const safeStats = stats || { members: 0, courses: 0 };
   const defaultImage =
     "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80";
 
@@ -87,11 +89,11 @@ export function CommunityCard({
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Users size={14} />
-            <span>{stats?.members || 0} members</span>
+            <span>{safeStats.members || 0} members</span>
           </div>
           <div className="flex items-center gap-1">
             <BookOpen size={14} />
-            <span>{stats?.courses || 0} courses</span>
+            <span>{safeStats.courses || 0} courses</span>
           </div>
         </div>
       </CardContent>

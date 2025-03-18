@@ -365,6 +365,7 @@ export type Database = {
       }
       discussions: {
         Row: {
+          category: string | null
           community_id: string
           content: string
           created_at: string | null
@@ -374,6 +375,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          category?: string | null
           community_id: string
           content: string
           created_at?: string | null
@@ -383,6 +385,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          category?: string | null
           community_id?: string
           content?: string
           created_at?: string | null
