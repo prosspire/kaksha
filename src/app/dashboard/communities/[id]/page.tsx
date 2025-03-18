@@ -2,7 +2,7 @@ import { createClient } from "../../../../../supabase/server";
 import { SubscriptionCheck } from "@/components/subscription-check";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, MessageSquare, PlusCircle, Users } from "lucide-react";
+import { BookOpen, Mail, MessageSquare, PlusCircle, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import DashboardNavbar from "@/components/dashboard-navbar";
@@ -103,10 +103,11 @@ export default async function CommunityDashboard({
 
           {/* Tabs */}
           <Tabs defaultValue="courses" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="courses">Courses</TabsTrigger>
               <TabsTrigger value="discussions">Discussions</TabsTrigger>
               <TabsTrigger value="members">Members</TabsTrigger>
+              <TabsTrigger value="newsletter">Newsletter</TabsTrigger>
             </TabsList>
             <TabsContent value="courses" className="mt-6">
               <div className="flex justify-between items-center mb-4">
@@ -179,6 +180,31 @@ export default async function CommunityDashboard({
                 <p className="text-muted-foreground">
                   No members have joined yet.
                 </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="newsletter" className="mt-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Newsletter</h2>
+                {isCreator && (
+                  <Link href={`/dashboard/communities/${params.id}/newsletter`}>
+                    <Button size="sm">
+                      <Mail size={16} className="mr-2" />
+                      Manage Newsletter
+                    </Button>
+                  </Link>
+                )}
+              </div>
+              <div className="bg-muted p-8 rounded-lg text-center">
+                <p className="text-muted-foreground">
+                  Send newsletters to keep your community members updated.
+                </p>
+                {isCreator && (
+                  <Link href={`/dashboard/communities/${params.id}/newsletter`}>
+                    <Button variant="link" className="mt-2">
+                      Manage your newsletter
+                    </Button>
+                  </Link>
+                )}
               </div>
             </TabsContent>
           </Tabs>

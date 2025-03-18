@@ -133,6 +133,54 @@ export type Database = {
           },
         ]
       }
+      community_newsletters: {
+        Row: {
+          community_id: string
+          content: string
+          created_at: string | null
+          creator_id: string
+          id: string
+          recipient_count: number
+          subject: string
+          updated_at: string | null
+        }
+        Insert: {
+          community_id: string
+          content: string
+          created_at?: string | null
+          creator_id: string
+          id?: string
+          recipient_count?: number
+          subject: string
+          updated_at?: string | null
+        }
+        Update: {
+          community_id?: string
+          content?: string
+          created_at?: string | null
+          creator_id?: string
+          id?: string
+          recipient_count?: number
+          subject?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_newsletters_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_newsletters_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_subscriptions: {
         Row: {
           amount: number
@@ -621,6 +669,7 @@ export type Database = {
           created_at: string
           credits: string | null
           email: string | null
+          email_notifications: boolean | null
           expertise: string | null
           full_name: string | null
           id: string
@@ -643,6 +692,7 @@ export type Database = {
           created_at?: string
           credits?: string | null
           email?: string | null
+          email_notifications?: boolean | null
           expertise?: string | null
           full_name?: string | null
           id: string
@@ -665,6 +715,7 @@ export type Database = {
           created_at?: string
           credits?: string | null
           email?: string | null
+          email_notifications?: boolean | null
           expertise?: string | null
           full_name?: string | null
           id?: string

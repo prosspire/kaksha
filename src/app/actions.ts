@@ -80,6 +80,24 @@ export const signInAction = async (formData: FormData) => {
   return redirect("/dashboard");
 };
 
+export const signInWithGoogleAction = async () => {
+  const supabase = await createClient();
+  const origin = headers().get("origin");
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    return encodedRedirect("error", "/sign-in", error.message);
+  }
+
+  return redirect(data.url);
+};
+
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = await createClient();
@@ -344,6 +362,7 @@ export const updateProfileAction = async (formData: FormData) => {
   const youtubeUrl = formData.get("youtube_url")?.toString();
   const expertise = formData.get("expertise")?.toString();
   const interests = formData.get("interests")?.toString();
+  const emailNotifications = formData.get("email_notifications") === "on";
 
   // Update user profile
   const { error } = await supabase
@@ -359,6 +378,7 @@ export const updateProfileAction = async (formData: FormData) => {
       youtube_url: youtubeUrl,
       expertise,
       interests,
+      email_notifications: emailNotifications,
       updated_at: new Date().toISOString(),
     })
     .eq("id", user.id);
@@ -452,4 +472,93 @@ export const createEventAction = async (formData: FormData) => {
   }
 
   return redirect(`/dashboard/communities/${communityId}?tab=events`);
+};
+
+export const sendNewsletterAction = async (formData: FormData) => {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  const subject = formData.get("subject")?.toString();
+  const content = formData.get("content")?.toString();
+  const communityId = formData.get("community_id")?.toString();
+
+  if (!subject || !content || !communityId) {
+    return { success: false, error: "Required fields are missing" };
+  }
+
+  // Check if user is admin of the community
+  const { data: community } = await supabase
+    .from("communities")
+    .select("*")
+    .eq("id", communityId)
+    .eq("creator_id", user.id)
+    .single();
+
+  if (!community) {
+    return {
+      success: false,
+      error: "You don't have permission to send newsletters for this community",
+    };
+  }
+
+  // Get all members who have opted in to email notifications
+  const { data: members } = await supabase
+    .from("community_members")
+    .select("user_id")
+    .eq("community_id", communityId);
+
+  if (!members || members.length === 0) {
+    return { success: false, error: "No members to send newsletter to" };
+  }
+
+  const memberIds = members.map((member) => member.user_id);
+
+  // Get emails of members who have opted in to email notifications
+  const { data: users } = await supabase
+    .from("users")
+    .select("email, email_notifications")
+    .in("id", memberIds)
+    .eq("email_notifications", true);
+
+  const recipientEmails =
+    users
+      ?.filter((user) => user.email && user.email_notifications)
+      .map((user) => user.email) || [];
+
+  if (recipientEmails.length === 0) {
+    return {
+      success: false,
+      error: "No members have opted in to receive newsletters",
+    };
+  }
+
+  // Store the newsletter in the database
+  const { data: newsletter, error: insertError } = await supabase
+    .from("community_newsletters")
+    .insert({
+      community_id: communityId,
+      subject,
+      content,
+      creator_id: user.id,
+      recipient_count: recipientEmails.length,
+      created_at: new Date().toISOString(),
+    })
+    .select()
+    .single();
+
+  if (insertError) {
+    return { success: false, error: "Failed to create newsletter record" };
+  }
+
+  // In a real implementation, you would integrate with an email service like SendGrid, Mailchimp, etc.
+  // For now, we'll just simulate sending emails by storing the newsletter in the database
+
+  return { success: true, newsletterId: newsletter.id };
 };
